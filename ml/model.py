@@ -34,11 +34,12 @@ def train_model(X_train, y_train):
     }
     
     grid_tuning = GridSearchCV(
-        estimator=rfc_model, 
-        param_grid=parameters_grid, 
-        cv=5, 
-        scoring="accuracy", 
-        n_jobs=-1)
+        estimator=rfc_model,
+        param_grid=parameters_grid,
+        cv=5,
+        scoring="accuracy",
+        n_jobs=-1
+    )
 
     # Fit the grid tuning to the training data
     grid_tuning.fit(X_train, y_train)
