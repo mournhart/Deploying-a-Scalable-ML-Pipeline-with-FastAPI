@@ -19,11 +19,10 @@ cat_features = [
     "native-country",
 ]
 
-data = pd.read_csv("data/census.csv")
-# Take a subset of the data for unit testing
-sample_data = data.head(10)
+# Read in the first 20 rows of the file as data for unit testing
+data = pd.read_csv("data/census.csv", nrows=20)
 
-train, test = train_test_split(sample_data, test_size=0.2, random_state=20)
+train, test = train_test_split(data, test_size=0.2, random_state=20)
 
 
 def test_model_used_is_rfc():
