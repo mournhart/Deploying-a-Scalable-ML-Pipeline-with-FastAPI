@@ -2,6 +2,7 @@ import pytest
 # TODO: add necessary import
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
 from ml.data import process_data
 from ml.model import train_model, compute_model_metrics, inference
 
