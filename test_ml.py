@@ -9,7 +9,7 @@ def test_model_used_is_rfc():
     # Test that the ML model used is RandomForestClassifier.
     """
     # Your code here
-     X_train, y_train, encoder, lb = process_data(
+    X_train, y_train, encoder, lb = process_data(
         train,
         categorical_features=cat_features,
         label="salary",
