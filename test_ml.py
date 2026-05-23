@@ -21,7 +21,7 @@ cat_features = [
 
 data = pd.read_csv("data/census.csv")
 # Take a subset of the data for unit testing
-sample_data = df.head(10)
+sample_data = data.head(10)
 
 train, test = train_test_split(sample_data, test_size=0.2, random_state=20)
 
