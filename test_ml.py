@@ -7,6 +7,7 @@ from ml.data import process_data
 from ml.model import train_model, compute_model_metrics, inference
 
 # TODO: implement the first test. Change the function name and input as needed
+
 cat_features = [
     "workclass",
     "education",
@@ -19,8 +20,10 @@ cat_features = [
 ]
 
 data = pd.read_csv("data/census.csv")
+# Take a subset of the data for unit testing
+sample_data = df.head(10)
 
-train, test = train_test_split(data, test_size=0.2, random_state=20)
+train, test = train_test_split(sample_data, test_size=0.2, random_state=20)
 
 
 def test_model_used_is_rfc():
