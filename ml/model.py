@@ -2,6 +2,8 @@ import pickle
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from ml.data import process_data
 # TODO: add necessary import
+from sklearn.ensemble import RandomForestClassifier 
+from sklearn.model_selection import GridSearchCV, train_test_split
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -20,7 +22,24 @@ def train_model(X_train, y_train):
         Trained machine learning model.
     """
     # TODO: implement the function
-    pass
+    # Create the model and use gridsearchcv for parameters tuning
+    rfc_model = RandomForestClassifier(random_state=20)
+
+    # Setup parameters to iterate through
+    parameters_grid = {
+        "n_estimators": [50, 200],
+        "max_features": [8, 12, 15],
+        "max_depth": [10, 15, None],
+        "min_samples_leaf": [1, 2, 5]
+    }
+    
+    grid_tuning = GridSearchCV(estimator=rfc_model, param_grid=parameters_grid, cv=5, scoring="accuracy", n_jobs=-1)
+
+    # Fit the grid tuning to the training data
+    grid_tuning.fit(X_train, y_train)
+
+    # Get the best one from the search
+    return grid_tuning.best_estimator_
 
 
 def compute_model_metrics(y, preds):
@@ -50,7 +69,7 @@ def inference(model, X):
 
     Inputs
     ------
-    model : ???
+    model : sklearn - RandomForestClassifier (best estimator returned by train_model function)
         Trained machine learning model.
     X : np.array
         Data used for prediction.
@@ -60,7 +79,8 @@ def inference(model, X):
         Predictions from the model.
     """
     # TODO: implement the function
-    pass
+    # Use the model from the train_model function to get the preds.
+    return model.predict(X)
 
 def save_model(model, path):
     """ Serializes model to a file.
@@ -73,12 +93,17 @@ def save_model(model, path):
         Path to save pickle file.
     """
     # TODO: implement the function
-    pass
+    # Saves the model to a pickle file
+    with open(path, "wb") as pk_file:
+        pickle.dump(model, pk_file)
 
 def load_model(path):
     """ Loads pickle file from `path` and returns it."""
     # TODO: implement the function
-    pass
+    # opens the pickle file and returns it
+    with open(path, "rb") as pk_file:
+        loaded_file = pickle.load(pk_file)
+    return loaded_file
 
 
 def performance_on_categorical_slice(
@@ -119,10 +144,15 @@ def performance_on_categorical_slice(
     """
     # TODO: implement the function
     X_slice, y_slice, _, _ = process_data(
-        # your code here
+        data[data[column_name] == slice_value],
+        categorical_features = categorical_features,
+        label = label,
+        training = False,
+        encoder = encoder,
+        lb = lb
         # for input data, use data in column given as "column_name", with the slice_value 
         # use training = False
     )
-    preds = None # your code here to get prediction on X_slice using the inference function
+    preds = inference(model, X_slice) # your code here to get prediction on X_slice using the inference function
     precision, recall, fbeta = compute_model_metrics(y_slice, preds)
     return precision, recall, fbeta
