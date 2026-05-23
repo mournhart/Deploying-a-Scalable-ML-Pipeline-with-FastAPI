@@ -1,6 +1,8 @@
 import pytest
 # TODO: add necessary import
 from sklearn.ensemble import RandomForestClassifier
+from ml.data import process_data
+from ml.model import train_model, compute_model_metrics, inference
 
 # TODO: implement the first test. Change the function name and input as needed
 
