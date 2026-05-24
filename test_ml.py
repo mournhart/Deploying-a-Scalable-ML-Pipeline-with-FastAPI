@@ -19,8 +19,8 @@ cat_features = [
     "native-country",
 ]
 
-# Read in the first 20 rows of the file as data for unit testing
-data = pd.read_csv("data/census.csv", nrows=20)
+# Read in the first 60 rows of the file as data for unit testing
+data = pd.read_csv("data/census.csv", nrows=60)
 
 train, test = train_test_split(data, test_size=0.2, random_state=20)
 
@@ -43,18 +43,50 @@ def test_model_used_is_rfc():
 
 
 # TODO: implement the second test. Change the function name and input as needed
-def test_two():
+def test_process_data():
     """
-    # add description for the second test
+    # Check that the shape of the training data and the labels have the same row count.
     """
     # Your code here
-    pass
+    X_train, y_train, encoder, lb = process_data(
+        train,
+        categorical_features=cat_features,
+        label="salary",
+        training=True
+    )
+
+    assert X_train.shape[0] == y_train.shape[0]
+    assert encoder is not None
+    assert lb is not None
 
 
 # TODO: implement the third test. Change the function name and input as needed
-def test_three():
+def test_compute_model_metrics():
     """
-    # add description for the third test
+    # Check that the model metrics are scores between 0 and 1.
     """
     # Your code here
-    pass
+    X_train, y_train, encoder, lb = process_data(
+        train,
+        categorical_features=cat_features,
+        label="salary",
+        training=True
+    )
+
+    X_test, y_test, encoder, lb = process_data(
+        subset,
+        categorical_features=cat_features,
+        label="salary",
+        training=True,
+        encoder=encoder,
+        lb=lb
+    )
+
+    model = train_model(X_train, y_train)
+    preds = inference(model, X_test)
+    precision, recall, fbeta = compute_model_metrics(y_test, preds)
+
+    assert 0 <= precision <= 1
+    assert 0 <= recall <= 1
+    assert 0 <= fbeta <= 1
+
