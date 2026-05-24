@@ -74,7 +74,7 @@ def test_compute_model_metrics():
     )
 
     X_test, y_test, encoder, lb = process_data(
-        subset,
+        test,
         categorical_features=cat_features,
         label="salary",
         training=True,
