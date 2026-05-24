@@ -77,7 +77,7 @@ def test_compute_model_metrics():
         test,
         categorical_features=cat_features,
         label="salary",
-        training=True,
+        training=False,
         encoder=encoder,
         lb=lb
     )
